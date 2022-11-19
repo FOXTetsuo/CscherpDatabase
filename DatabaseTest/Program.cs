@@ -1,41 +1,20 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿
 
-
-using System.Data;
-using System.Reflection;
 using DatabaseTest;
-using MySql.Data.MySqlClient;
 
+Database.Database.Connect();
 
-var props = typeof(Gerechten).GetProperties();
+DataSet dataSet = new DataSet();
 
-// join props togehter with a comma
-var propsJoined = string.Join(",", props.Select(p => p.Name));
+dataSet.Fill();
 
-MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
-builder.Server = "localhost";
-builder.UserID = "root";
-builder.Database = "maccie";
-MySqlConnection connection = new MySqlConnection(builder.ToString());
-connection.Open();
-MySqlCommand command = connection.CreateCommand();
-command.CommandText = $"SELECT {propsJoined} FROM `gerechten`";
+dataSet.PrintLists();
 
-MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+// List<Gerechten> gerechten = Database.Database.GenerateList<Gerechten>();
 
-DataSet ds = new DataSet();
-adapter.Fill(ds);
+// foreach (Gerechten gerecht in gerechten)
+// {
+    // Console.WriteLine(gerecht);
+// }
 
-List<Gerechten> gerechten = new List<Gerechten>();
-
-foreach (DataRow row in ds.Tables[0].Rows)
-{
-    gerechten.Add(new Gerechten((string) row["Naam"], (string) row["Beschrijving"], (int) row["Prijs"]));
-}
-
-connection.Close();
-
-foreach (var gerecht in gerechten)
-{
-    Console.WriteLine(gerecht);
-}
+Database.Database.Disconnect();

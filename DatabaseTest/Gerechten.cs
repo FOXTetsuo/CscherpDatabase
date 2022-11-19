@@ -1,5 +1,3 @@
-using MySql.Data.MySqlClient;
-
 namespace DatabaseTest;
 
 public class Gerechten
@@ -13,6 +11,10 @@ public class Gerechten
         Naam = naam;
         Beschrijving = beschrijving;
         Prijs = prijs;
+    }
+    
+    public Gerechten()
+    {
     }
 
     public override string ToString()
