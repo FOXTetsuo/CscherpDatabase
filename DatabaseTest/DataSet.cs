@@ -1,9 +1,12 @@
+using System.Collections;
+
 namespace DatabaseTest;
 
 public class DataSet
 {
     public List<Gerechten> Gerechtens { get; set; }
     public List<Gerechten> Gerechten { get; set; }
+    public List<GerechtSoorten> GerechtSoortens { get; set; }
 
     public DataSet()
     {
@@ -36,14 +39,16 @@ public class DataSet
 
     public void PrintLists()
     {
-        foreach (var gerecht in Gerechten)
+        var type = this.GetType();
+        var properties = type.GetProperties();
+        foreach (var property in properties)
         {
-            Console.WriteLine(gerecht);
-        }
-        Console.WriteLine("--------------------------------------------------");
-        foreach (var gerecht in Gerechtens)
-        {
-            Console.WriteLine(gerecht);
+            Console.WriteLine(property.Name + "---------------------------------");
+            foreach (var item in (IEnumerable)property.GetValue(this))
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine("------------------------------------------------");
         }
     }
 }
